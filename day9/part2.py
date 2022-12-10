@@ -50,16 +50,18 @@ def update_knot(prevIndex, nextIndex):
     prev[1] -= move[1]
     if(nextIndex != len(rope)):
         update_knot(nextIndex, nextIndex + 1)
+    else:
+        tail_locations.add(str(tail_location))
+
 
 def main():
     file = open("day9/input.txt")
+    tail_locations.add(str(tail_location))
     for line in file:
         split_line = line.strip().split()
         for x in range(int(split_line[1])):
             update_head(split_line[0])
-            tail_locations.add(str(tail_location))
     print(len(tail_locations))
-
 
 if __name__ == "__main__":
     main()
