@@ -1,0 +1,87 @@
+# Brute force dfs search with optimized graph (only look at nodes with working valves)
+
+import re
+
+from functools import lru_cache
+
+regex = r"Valve (\w+) has flow rate=(\d+); tunnels? leads? to valves? (.+)"
+
+valves = {}
+valve_to_index = {"AA": 0}
+simple_valve_graph = {}
+important = set()
+max_time = 30
+
+def bfs(start):
+    queue = []
+    explored = set()
+    edges = []
+    queue.append({
+        "valve": start,
+        "distance": 0
+    })
+    while(len(queue) > 0):
+        location = queue.pop(0)
+        valve_name = location["valve"]
+        valve_distance = location["distance"]
+        valve = valves[valve_name]
+        if valve_name in explored:
+            continue
+        if valve["Flow Rate"] > 0 and valve_name != start:
+            edges.append({
+                "tunnel": valve_name,
+                "distance": valve_distance
+            })
+        for tunnel in valve["Tunnels"]:
+            queue.append({
+                "valve": tunnel,
+                "distance": valve_distance + 1
+            })
+        explored.add(valve_name)
+    simple_valve_graph[start] = {
+        "Tunnels": edges,
+        "Flow Rate": valves[start]["Flow Rate"]
+    }
+
+def search_for_route(time, location, visited, pressure, visits):
+    if(time >= max_time):
+        return pressure
+    if(visited[valve_to_index[location]]):
+        return 0
+    if(visits >= len(simple_valve_graph)):
+        return pressure
+    max_pressure = pressure
+    valve = simple_valve_graph[location]
+    new_visited = list(visited)
+    new_visited[valve_to_index[location]] = True
+    for next_location in valve["Tunnels"]:
+        max_pressure = max(max_pressure, 
+            search_for_route(time + next_location["distance"] + 1, 
+            next_location["tunnel"], tuple(new_visited), 
+            pressure + (max_time - time) * valve["Flow Rate"], 
+            visits + 1))
+    return max_pressure
+
+
+def main():
+    file = open("day16/input.txt")
+    for line in file:
+        result = re.search(regex, line.strip())
+        valves[result.group(1)] = {
+            "Flow Rate": int(result.group(2)),
+            "Tunnels": result.group(3).split(", ")
+        }
+        if(int(result.group(2)) != 0):
+            important.add(result.group(1))
+            valve_to_index[result.group(1)] = len(valve_to_index)
+
+    #generate better graph
+    bfs("AA")
+    for valve in important:
+        bfs(valve)
+    #Search graph
+    visited = (False, ) * len(valve_to_index)
+    print(search_for_route(0, "AA", visited, 0, 0))
+
+if __name__ == "__main__":
+    main()
