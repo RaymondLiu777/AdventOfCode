@@ -2,13 +2,25 @@ import sys
 import pyperclip
 
 def part1(filename):
-    
-    pass
+    lines = open(filename).readlines()
+    times = list(map(int, lines[0].strip().split()[1:]))
+    records = list(map(int, lines[1].strip().split()[1:]))
+    total = 1
+    print(times, records)
+    for i in range(len(times)):
+        minTime = 0
+        for t in range(times[i]):
+            if(t * (times[i] - t) > records[i]):
+                minTime = t
+                break
+        total *= times[i] - (2 * minTime) + 1
+        print(minTime, times[i] - (2 * minTime) + 1)
+    return total
 
 
 
 def part2(filename):
-    
+    #Use desmo calculator and quadratic equation solver :)
     pass
 
 
