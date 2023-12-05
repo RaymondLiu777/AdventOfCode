@@ -3,13 +3,13 @@ import pyperclip
 
 def part1(filename):
     
-    pass
+    return -1
 
 
 
 def part2(filename):
     
-    pass
+    return -1
 
 
 
