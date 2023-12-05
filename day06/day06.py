@@ -20,8 +20,16 @@ def part1(filename):
 
 
 def part2(filename):
-    #Use desmo calculator and quadratic equation solver :)
-    pass
+    # I use desmo calculator and quadratic equation solver :)
+    # Apparently brute force is also possible
+    lines = open(filename).readlines()
+    time = int(lines[0].replace(" ", "").strip().split(":")[1])
+    record = int(lines[1].replace(" ", "").strip().split(":")[1])
+    print(time, record)
+    for t in range(time):
+        if(t * (time - t) > record):
+            return time - (2 * t) + 1
+    
 
 
 
