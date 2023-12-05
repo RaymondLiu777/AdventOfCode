@@ -1,9 +1,14 @@
 #!/bin/bash
 
-folder=day$1
-mkdir $folder
-cd $folder
-touch input.txt
-touch sample.txt
-touch part1.py
-touch part2.py
+day=$(printf "%02d" $1)
+folder=day$day
+
+if test -d $folder; then
+    echo "Day already created"
+else
+    mkdir $folder
+    cp template.py $folder/$folder.py
+    touch $folder/sample.txt
+    curl -b session=$(cat .aocrc) --user-agent "github.com/RaymondLiu777/AoC_2023 by raymondliu4414@gmail.com" https://adventofcode.com/2023/day/$1/input > $folder/input.txt
+fi
+
