@@ -1,4 +1,5 @@
 import sys
+import pyperclip
 
 def part1(file):
     
@@ -26,8 +27,11 @@ if __name__ == "__main__" :
     elif sys.argv[1] == 'i':
         filename = "input.txt"
 
+    result = ""
     if sys.argv[2] == '1':
-        part1(open(filename))
+        result = part1(filename)
     elif sys.argv[2] == '2':
-        part2(open(filename))
+        result = part2(filename)
+    print(result)
+    pyperclip.copy(result)
     
