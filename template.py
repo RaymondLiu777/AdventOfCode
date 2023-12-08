@@ -1,16 +1,11 @@
 import sys
 import pyperclip
+sys.path.append('../')
+import AoC_helpers
 
-def part1(filename):
+def run(filename: str, part2: bool):
     
     return -1
-
-
-
-def part2(filename):
-    
-    return -1
-
 
 
 if __name__ == "__main__" :
@@ -27,11 +22,8 @@ if __name__ == "__main__" :
     elif sys.argv[1] == 'i':
         filename = "input.txt"
 
-    result = ""
-    if sys.argv[2] == '1':
-        result = part1(filename)
-    elif sys.argv[2] == '2':
-        result = part2(filename)
+    part2 = (sys.argv[2] == '2')
+    result = run(filename, part2)
     print(result)
-    pyperclip.copy(result)
+    pyperclip.copy(str(result))
     
