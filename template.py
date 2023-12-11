@@ -3,7 +3,7 @@ import pyperclip
 sys.path.append('../')
 import AoC_helpers
 
-def run(filename: str, part2: bool):
+def run(filename: str, part1: bool):
     
     return -1
 
@@ -22,8 +22,8 @@ if __name__ == "__main__" :
     elif sys.argv[1] == 'i':
         filename = "input.txt"
 
-    part2 = (sys.argv[2] == '2')
-    result = run(filename, part2)
+    part1 = (sys.argv[2] == '1')
+    result = run(filename, part1)
     print(result)
     pyperclip.copy(str(result))
     
