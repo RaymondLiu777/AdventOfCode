@@ -1,5 +1,4 @@
-*/input.txt
-*/sample.txt
+*/*.txt
 .aocrc
 .vscode
 __pycache__
