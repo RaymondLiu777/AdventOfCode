@@ -9,4 +9,4 @@ def parseLine(string: str, *arg):
         start = location + len(split)
     if(start != len(string)):
         result.append(string[start:])
-    return result
+    return tuple(result)
