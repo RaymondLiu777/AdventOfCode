@@ -1,0 +1,6 @@
+*/*.txt
+.aocrc
+.vscode
+__pycache__
+lib
+*.html
