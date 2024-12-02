@@ -30,4 +30,7 @@ with open(filename, 'r') as file:
     webpage = file.read()
     parser = AoCParser()
     parser.feed(webpage)
-    print(parser.sample, end="")
+    if parser.state == STATES[3]:
+        print(parser.sample, end="")
+    else:
+        print("Error, could not parse sample, Parser in state: " + parser.state, file=sys.stderr)
