@@ -10,15 +10,15 @@ class Directions:
     DL = (-1, -1) 
 
     # Useful constants
-    FOUR_DIR = {
+    CARDINAL = {
         "U": U, "D": D, "L": L, "R": R
     }
 
-    DIAGONAL_DIR = { 
+    DIAGONAL = { 
         "UR": UR, "UL": UL, "DR": DR, "DL": DL 
     }
 
-    DIR = { **FOUR_DIR, **DIAGONAL_DIR }
+    ALL = { **CARDINAL, **DIAGONAL }
 
 
 class Grid:

@@ -6,7 +6,7 @@ from AoC_helpers import Grid, TupleOps, Directions
 def checkForXmax1(crossword, start):
     XMAS_WORD = "XMAS"
     count = 0
-    for direction in Directions.DIR.values():
+    for direction in Directions.ALL.values():
         if(crossword.InGrid(start) and crossword.InGrid(tuple(map(lambda i, j: i + j * 3, start, direction)))):
             xmas = True
             for distance in range(4):
