@@ -1,7 +1,7 @@
 import sys
 import pyperclip
 sys.path.append('../')
-import AoC_helpers
+#from AoC_helpers import TupleOps, Grid, Directions
 
 def run(filename: str, part1: bool):
     

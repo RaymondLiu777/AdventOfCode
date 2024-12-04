@@ -12,16 +12,22 @@ class AoCParser(HTMLParser):
         self.state = STATES[0]
         self.sample = ""
 
-    def handle_starttag(self, tag, attrs):            
+    def handle_starttag(self, tag, attrs):
+        # Find first <code> tag after For Example
         if self.state == STATES[1] and tag == "code":
             self.state = STATES[2]
 
     def handle_data(self, data):
+        # Find first, For example
         if self.state == STATES[0] and re.search(regex, data, re.IGNORECASE) is not None:
             self.state = STATES[1]
-
+        # Grab data in <code> tag
         if self.state == STATES[2]:
-            self.sample = data
+            self.sample += data
+    
+    def handle_endtag(self, tag):
+        # Find ending </code>
+        if self.state == STATES[2] and tag == "code":
             self.state = STATES[3]
 
 
