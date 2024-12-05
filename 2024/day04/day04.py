@@ -1,7 +1,8 @@
 import sys
 import pyperclip
-sys.path.append('../')
-from AoC_helpers import Grid, TupleOps, Directions
+sys.path.append('../AoC_Helpers')
+from Grid import Directions, Grid
+from TupleOps import TupleOps
 
 def checkForXmax1(crossword, start):
     XMAS_WORD = "XMAS"

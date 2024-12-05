@@ -1,7 +1,6 @@
 import sys
 import pyperclip
 sys.path.append('../')
-import AoC_helpers
 
 def run(filename: str, part1: bool):
     if part1:

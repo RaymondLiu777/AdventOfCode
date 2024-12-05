@@ -1,7 +1,6 @@
 import sys
 import pyperclip
 sys.path.append('../')
-import AoC_helpers
 
 def checkValid(nums):
     increase = True if nums[0] < nums[1] else False
