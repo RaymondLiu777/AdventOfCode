@@ -2,22 +2,22 @@ from TupleOps import TupleOps
 
 class Directions:
 
-    U = (0, 1)
-    D = (0, -1)
-    L = (-1, 0)
-    R = (1, 0)
-    UR = (1, 1)
-    UL = (-1, 1)
-    DR = (1, -1)
-    DL = (-1, -1) 
+    N = (-1, 0)
+    S = (1, 0)
+    E = (0, 1)
+    W = (0, -1)
+    NW = TupleOps.Add(N, W)
+    NE = TupleOps.Add(N, E)
+    SW = TupleOps.Add(S, W)
+    SE = TupleOps.Add(S, E)
 
     # Useful constants
     CARDINAL = {
-        "U": U, "D": D, "L": L, "R": R
+        "N": N, "E": E, "S": S, "W": W
     }
 
     DIAGONAL = { 
-        "UR": UR, "UL": UL, "DR": DR, "DL": DL 
+        "NE": NE, "SE": SE, "SW": SW, "NW": NW
     }
 
     ALL = { **CARDINAL, **DIAGONAL }
@@ -36,5 +36,19 @@ class Grid:
             raise Exception("Error invalid location")
         return self.grid[new_location[0]][new_location[1]]
 
+    def SetGrid(self, location, value):
+        if not self.InGrid(location):
+            print("Error invalid location", location)
+            raise Exception("Error invalid location")
+        old_value = self.grid[location[0]][location[1]]
+        self.grid[location[0]][location[1]] = value
+        return old_value
+
     def InGrid(self, location):
         return location[0] >= 0 and location[1] >= 0 and location[0] < len(self.grid) and location[1] < len(self.grid[location[0]])
+
+    def print(self):
+        for line in self.grid:
+            for char in line:
+                print(char, end="")
+            print()

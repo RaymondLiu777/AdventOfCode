@@ -30,6 +30,14 @@ class InputParser:
         self.data = new_data
         return self
     
+    def readGrid(self):
+        self.data = self.data.split("\n")
+        new_data = []
+        for line in self.data:
+            new_data.append(list(line)) 
+        self.data = new_data
+        return self
+
     # Split line data (either by spliting on whitespace, based on a formatting)
     def split(self, delim=None):
         if(delim == None):
