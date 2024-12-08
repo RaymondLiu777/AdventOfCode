@@ -10,3 +10,6 @@ class TupleOps:
 
     def Multiply(tup1, multiple):
         return tuple(map(lambda i: i * multiple, tup1))
+
+    def Neg(tup1):
+        return tuple(map(lambda i: i * -1, tup1))

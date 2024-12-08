@@ -26,16 +26,23 @@ def run(filename: str, part1: bool):
             for location2 in locations:
                 if(location1 == location2):
                     continue
-                print(location1, location2)
                 distance = TupleOps.Subtract(location2, location1)
-                antinode1 = TupleOps.Add(location2, distance)
-                antinode2 = TupleOps.Subtract(location1, distance)
-                antinodes.add(antinode1)
-                antinodes.add(antinode2)
+                if(part1):
+                    antinodes.add(TupleOps.Add(location2, distance))
+                    antinodes.add(TupleOps.Subtract(location1, distance))
+                else:
+                    antinode = location2
+                    while (grid.InGrid(antinode)):
+                        antinodes.add(antinode)
+                        antinode = TupleOps.Add(antinode, distance)
+                    antinode = location1
+                    while (grid.InGrid(antinode)):
+                        antinodes.add(antinode)
+                        antinode = TupleOps.Subtract(antinode, distance)
     count = 0
     for antinode in antinodes:
         if grid.InGrid(antinode):
-            grid.SetGrid(antinode, "#")
+            # grid.SetGrid(antinode, "#")
             count += 1
     # grid.print()
     return count
