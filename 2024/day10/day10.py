@@ -24,12 +24,11 @@ def run(filename: str, part1: bool):
     input = InputParser(open(filename).read().strip()).readGrid().modifyData(int).getData()
     grid = Grid(input)
     paths = 0
-    for row in range(grid.rows):
-        for col in range(grid.cols):
-            if(grid.Get((row, col)) == 0):
-                all_peaks = findPaths(grid, (row, col))
+    for location in grid:
+            if(grid.Get(location) == 0):
+                all_peaks = findPaths(grid, location)
                 paths += len(set(all_peaks)) if part1 else len(all_peaks)
-                # print((row, col), all_peaks)
+                # print(location, all_peaks)
     return paths
 
 

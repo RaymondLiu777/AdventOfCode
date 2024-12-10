@@ -29,6 +29,11 @@ class Grid:
         self.rows = len(grid)
         self.cols = len(grid[0])
     
+    def __iter__(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                yield (row, col)
+    
     def Get(self, location, *argv):
         new_location = TupleOps.Add(location, *argv)
         if not self.InGrid(new_location):
