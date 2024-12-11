@@ -5,6 +5,7 @@ from InputParser import InputParser
 # from Grid import Directions, Grid
 # from TupleOps import TupleOps
 # from Graph import Graph
+from functools import cache
 
 # Implementation for part 1
 def naive_impl(input):
@@ -27,27 +28,21 @@ def naive_impl(input):
     return len(last_row)
 
 # Implementation for part 2
-cache = {}
+@cache
 def num_stones(stone: int, time_left:int):
     if(time_left == 0):
         return 1
-    global cache
-    if((stone, time_left) in cache):
-        return cache[(stone, time_left)]
     else:
-        created_stones = 0
         if(stone == 0):
-            created_stones = num_stones(1, time_left - 1)
+            return num_stones(1, time_left - 1)
         elif(len(str(stone)) % 2 == 1):
-            created_stones = num_stones(stone*2024, time_left-1)
+            return num_stones(stone*2024, time_left-1)
         else:
             stone_str = str(stone)
             stone_len = len(stone_str)
             stone1 = int(stone_str[0:stone_len//2])
             stone2 = int(stone_str[stone_len//2:])
-            created_stones = num_stones(stone1, time_left-1) + num_stones(stone2, time_left-1)
-        cache[(stone, time_left)] = created_stones
-        return created_stones
+            return num_stones(stone1, time_left-1) + num_stones(stone2, time_left-1)
         
 def run(filename: str, part1: bool):
     input = InputParser(open(filename).read()).readLines().split().modifyData(int).getData()[0]

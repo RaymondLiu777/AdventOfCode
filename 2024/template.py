@@ -1,10 +1,11 @@
 import sys
 import pyperclip
 sys.path.append('../AoC_Helpers')
-# from InputParser import InputParser
+from InputParser import InputParser
 # from Grid import Directions, Grid
 # from TupleOps import TupleOps
 # from Graph import Graph
+# from functools import cache
 
 
 def run(filename: str, part1: bool):
