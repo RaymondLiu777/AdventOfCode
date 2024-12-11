@@ -7,7 +7,7 @@
 # Intermitten data can be retrieved directly and placed into another input parser, be careful of flags
 class InputParser:
     def __init__(self, data):
-        self.data = data
+        self.data = data.strip()
         self.sections = False
         self.section_headers = False
 
