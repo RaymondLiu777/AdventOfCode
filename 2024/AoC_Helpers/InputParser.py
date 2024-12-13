@@ -46,7 +46,7 @@ class InputParser:
             self.applyToLines(lambda line: line.split(delim))
         return self
 
-    def __parseLine(string, *argv):
+    def parseLine(string, *argv):
         string = string.strip()
         result = []
         start = 0
@@ -60,7 +60,7 @@ class InputParser:
         return result
 
     def format(self, *argv):
-        self.applyToLines(lambda line: InputParser.__parseLine(line, *argv))
+        self.applyToLines(lambda line: InputParser.parseLine(line, *argv))
         return self
 
     # Apply operations to individual parts in a line
