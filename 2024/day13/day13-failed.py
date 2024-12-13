@@ -8,32 +8,36 @@ from TupleOps import TupleOps
 # from functools import cache
 
 import scipy.optimize
+import math
 
 def run(filename: str, part1: bool):
     input = InputParser(open(filename).read()).readSections().getData()
     tokens = 0
     for section in input:
-        buttonA = tuple(map(int, InputParser.parseLine(section[0], "Button A: X+", ", Y+")))
-        buttonB = tuple(map(int, InputParser.parseLine(section[1], "Button B: X+", ", Y+")))
-        prize = tuple(map(int, InputParser.parseLine(section[2], "Prize: X=", ", Y=")))
+        buttonA = tuple(map(float, InputParser.parseLine(section[0], "Button A: X+", ", Y+")))
+        buttonB = tuple(map(float, InputParser.parseLine(section[1], "Button B: X+", ", Y+")))
+        prize = tuple(map(float, InputParser.parseLine(section[2], "Prize: X=", ", Y=")))
         if not part1:
             prize = TupleOps.Add(prize, (10000000000000, 10000000000000))
         # print(buttonA, buttonB, prize)
-        c = [3, 1]
+        c = [1, 3]
         a_eq = [[buttonA[0], buttonB[0]], [buttonA[1], buttonB[1]]]
         b_eq = [prize[0], prize[1]]
         x0_bounds = (0, 100) if part1 else (0, None)
         x1_bounds = (0, 100) if part1 else (0, None)
         res = scipy.optimize.linprog(
-            c, A_eq=a_eq, b_eq=b_eq, bounds=(x0_bounds, x1_bounds),
-            integrality=[1, 1])
+            c, A_eq=a_eq, b_eq=b_eq, bounds=(x0_bounds, x1_bounds))
+            # , integrality=[1, 1])
         # print(res)
         if(res.success):
-            tokens += res.x[0] * 3 + res.x[1]
-            # print(res.x)
+            if(math.isclose(res.x[0], round(res.x[0]), rel_tol=1e-13) and math.isclose(res.x[1], round(res.x[1]), rel_tol=1e-13)):
+                tokens += res.x[0] * 3 + res.x[1]
+            # else:
+                # print("Failed :", end="")
+            # print(f'{res.x[0]:.20f} {res.x[1]:.20f}')
         # print(res.x, res.success)
-        if(res.status != 0 and res.status != 2):
-            print(res.status)
+        # if(res.status != 0 and res.status != 2):
+        #     print(res.status)
         # return
     return tokens
 
