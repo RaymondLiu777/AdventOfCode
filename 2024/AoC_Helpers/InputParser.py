@@ -1,8 +1,10 @@
+import re
+
 # Usage:
 # 1. InputParser(data) -> Probably open(filename).read()
 # 2. readLines or readSections to parse out lines
-# 3. split or format to parse lines into strings
-# 4. modifyData to convert strings into appropriate datatypes
+# 3. split or format to parse lines into strings, also can use regex or findNumbers to search for things
+# 4. cast to convert strings into appropriate datatypes/any other lambda functions
 # 5. getData to retrieve result
 # Intermitten data can be retrieved directly and placed into another input parser, be careful of flags
 class InputParser:
@@ -62,6 +64,14 @@ class InputParser:
     def format(self, *argv):
         self.applyToLines(lambda line: InputParser.parseLine(line, *argv))
         return self
+    
+    def regex(self, regExp):
+        self.applyToLines(lambda line: re.search(regExp, line).groups())
+        return self
+    
+    def findNumbers(self):
+        self.applyToLines(lambda line: tuple(map(int, re.findall(r"\d+", line))))
+        return self
 
     # Apply operations to individual parts in a line
     def __modifyData(line, *argv):
@@ -70,7 +80,7 @@ class InputParser:
             new_data.append(argv[idx%len(argv)](val))
         return new_data
 
-    def modifyData(self, *argv):
+    def cast(self, *argv):
         self.applyToLines(lambda line: InputParser.__modifyData(line, *argv))
         return self
 

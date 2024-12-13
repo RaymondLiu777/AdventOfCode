@@ -11,12 +11,9 @@ from z3 import Int, Solver, sat
 
 
 def run(filename: str, part1: bool):
-    input = InputParser(open(filename).read()).readSections().getData()
+    input = InputParser(open(filename).read()).readSections().findNumbers().getData()
     tokens = 0
-    for section in input:
-        buttonA = tuple(map(int, InputParser.parseLine(section[0], "Button A: X+", ", Y+")))
-        buttonB = tuple(map(int, InputParser.parseLine(section[1], "Button B: X+", ", Y+")))
-        prize = tuple(map(int, InputParser.parseLine(section[2], "Prize: X=", ", Y=")))
+    for buttonA, buttonB, prize in input:
         if not part1:
             prize = TupleOps.Add(prize, (10000000000000, 10000000000000))
         # print(buttonA, buttonB, prize)
