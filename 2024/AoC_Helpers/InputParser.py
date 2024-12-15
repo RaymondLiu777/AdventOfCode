@@ -9,7 +9,7 @@ import re
 # Intermitten data can be retrieved directly and placed into another input parser, be careful of flags
 class InputParser:
     def __init__(self, data):
-        self.data = data.strip()
+        self.data = data.strip() if type(data) == str else data
         self.sections = False
         self.section_headers = False
 
@@ -70,7 +70,7 @@ class InputParser:
         return self
     
     def findNumbers(self):
-        self.applyToLines(lambda line: tuple(map(int, re.findall(r"\d+", line))))
+        self.applyToLines(lambda line: tuple(map(int, re.findall(r"-?\d+", line))))
         return self
 
     # Apply operations to individual parts in a line
