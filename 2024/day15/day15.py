@@ -7,13 +7,13 @@ from TupleOps import TupleOps
 # from Graph import Graph
 # from functools import cache
 
-
 def run(filename: str, part1: bool):
     grid, moves = open(filename).read().split("\n\n")
-    grid = grid.replace("#", "##")
-    grid = grid.replace("O", "[]")
-    grid = grid.replace(".", "..")
-    grid = grid.replace("@", "@.")
+    if(not part1):
+        grid = grid.replace("#", "##")
+        grid = grid.replace("O", "[]")
+        grid = grid.replace(".", "..")
+        grid = grid.replace("@", "@.")
     grid = Grid(InputParser(grid).readGrid().getData())
     moves = list(moves.strip())
     moves = filter(lambda x: x != "\n", moves)
@@ -22,6 +22,9 @@ def run(filename: str, part1: bool):
     for location in grid:
         if(grid.Get(location) == "@"):
             robot = location
+            grid.SetGrid(location, ".")
+        if(grid.Get(location) == "O"):
+            boxes.add(location)
             grid.SetGrid(location, ".")
         if(grid.Get(location) == "["):
             boxes.add(location)
@@ -41,7 +44,21 @@ def run(filename: str, part1: bool):
     # print(boxes)
     for move in moves:
         next_location = TupleOps.Add(robot, move)
-        if(next_location in boxes or TupleOps.Add(next_location, (0, -1)) in boxes):
+        # Part 1 box pushing
+        if(part1 and next_location in boxes):
+            next_next_location = next_location
+            # Check for how many boxes in a row
+            while(next_next_location in boxes):
+                next_next_location = TupleOps.Add(next_next_location, move)
+            if(grid.Get(next_next_location) == "#"):
+                continue
+            elif(grid.Get(next_next_location) == "."):
+                # Move all boxes over (shortcut, move first box to where the last one gets pushed)
+                boxes.remove(next_location)
+                boxes.add(next_next_location)
+                robot = next_location
+        # Part 2 box pushing
+        elif(not part1 and (next_location in boxes or TupleOps.Add(next_location, (0, -1)) in boxes)):
             locations_to_check = [next_location]
             boxes_to_move = set()
             wall_found = False
@@ -73,6 +90,7 @@ def run(filename: str, part1: bool):
                 for box in boxes_to_move:
                     boxes.add(TupleOps.Add(box, move))
                 robot = next_location
+        # Move into empty space or wall
         elif(grid.Get(next_location) == "."):
             robot = next_location
             continue
@@ -81,16 +99,20 @@ def run(filename: str, part1: bool):
         else:
             print(grid.Get(next_location), next_location)
             raise Exception("unrecongized symbol")
+    # Draw everything back onto the map
     for box in boxes:
-        grid.SetGrid(box, "[")
-        grid.SetGrid(TupleOps.Add(box, (0, 1)), "]")
+        if(part1):
+            grid.SetGrid(box, "O")
+        else:
+            grid.SetGrid(box, "[")
+            grid.SetGrid(TupleOps.Add(box, (0, 1)), "]")
     grid.SetGrid(robot, "@")
     grid.print()
+    # Calculate gps value
     gps = 0
     for location in grid:
-        if(grid.Get(location) == "["):
+        if(grid.Get(location) == ("O" if part1 else "[")):
             gps += 100 * location[0] + location[1]
-
     return gps
 
 
@@ -114,51 +136,3 @@ if __name__ == "__main__" :
     result = run(filename, part1)
     print(result)
     pyperclip.copy(str(result))
-    
-
-# grid, moves = open(filename).read().split("\n\n")
-#     grid = Grid(InputParser(grid).readGrid().getData())
-#     moves = list(moves.strip())
-#     moves = filter(lambda x: x != "\n", moves)
-#     robot = (-1, -1)
-#     for location in grid:
-#         if(grid.Get(location) == "@"):
-#             robot = location
-#             grid.SetGrid(location, ".")
-#     arrow_to_dir = {
-#         "^": Directions.N,
-#         "v": Directions.S,
-#         ">": Directions.E,
-#         "<": Directions.W,
-#     }
-#     moves = list(map(lambda x: arrow_to_dir[x], moves))
-#     # grid.print()
-#     # print(moves)
-#     for move in moves:
-#         next_location = TupleOps.Add(robot, move)
-#         if(grid.Get(next_location) == "."):
-#             robot = next_location
-#             continue
-#         elif(grid.Get(next_location) == "#"):
-#             continue
-#         elif(grid.Get(next_location) == "O"):
-#             next_next_location = next_location
-#             while(grid.Get(next_next_location) == "O"):
-#                 next_next_location = TupleOps.Add(next_next_location, move)
-#             if(grid.Get(next_next_location) == "#"):
-#                 continue
-#             elif(grid.Get(next_next_location) == "."):
-#                 grid.SetGrid(next_next_location, "O")
-#                 grid.SetGrid(next_location, ".")
-#                 robot = next_location
-#         else:
-#             print(grid.Get(next_location), next_location)
-#             raise Exception("unrecongized symbol")
-#     grid.SetGrid(robot, "@")
-#     grid.print()
-#     gps = 0
-#     for location in grid:
-#         if(grid.Get(location) == "O"):
-#             gps += 100 * location[0] + location[1]
-
-#     return gps
