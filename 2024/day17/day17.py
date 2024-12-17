@@ -69,9 +69,8 @@ def backTracking(B, C, code):
         # print(top, queue)
         # input()
         new_vals = []
-        # Note that we must check the numbers from smallest to biggest (on the change we find the correct number), 
-        # however they are reversed before being appended to the queue
-        # So that the smallest numbers are at the end of the queue
+        # Note that we must check the numbers from smallest to biggest (on the chance we find the correct number), 
+        # however they are reversed before being appended to the queue so that the smallest numbers are at the "front" of the queue (end of the list)
         for i in range(8):
             new_A = top * 8 + i
             output = runCode(new_A, B, C, code)
