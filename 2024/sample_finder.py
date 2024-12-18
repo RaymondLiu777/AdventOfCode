@@ -2,8 +2,8 @@ from html.parser import HTMLParser
 import re
 import sys
 
-STATES = ["Start", "Found PreText (for example)", "Found Code Tag", "Got Sample"]
-regex = "for example"
+STATES = ["Start", "Found PreText (example)", "Found Code Tag", "Got Sample"]
+regex = "example"
 
 class AoCParser(HTMLParser):
     def __init__(self):
