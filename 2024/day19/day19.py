@@ -9,23 +9,14 @@ from functools import cache
 
 towels = set()
 
-def makeTowelPart1(pattern):
-    if(pattern == ""):
-        return True
-    for towel in towels:
-        if towel == pattern[0:len(towel)]:
-            if(makeTowelPart1(pattern[len(towel):])):
-               return True
-    return False
-
 @cache
-def makeTowelPart2(pattern):
+def makeTowel(pattern):
     if(pattern == ""):
         return 1
     possibilities = 0
     for towel in towels:
         if towel == pattern[0:len(towel)]:
-            possibilities += makeTowelPart2(pattern[len(towel):])
+            possibilities += makeTowel(pattern[len(towel):])
     return possibilities
 
 def run(filename: str, part1: bool):
@@ -36,10 +27,10 @@ def run(filename: str, part1: bool):
     possibilities = 0
     for pattern in patterns:
         if part1:
-            if(makeTowelPart1(pattern)):
+            if(makeTowel(pattern) != 0):
                 possibilities += 1
         else:
-            possibilities += makeTowelPart2(pattern)
+            possibilities += makeTowel(pattern)
     return possibilities
 
 
