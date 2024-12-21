@@ -6,13 +6,35 @@ import re
 from Grid import Directions, Grid
 from TupleOps import TupleOps
 # from Graph import Graph
-# from functools import cache
+from functools import cache
 
 direction_to_symbol = {
     Directions.N: "^",
     Directions.S: "v",
     Directions.W: "<",
     Directions.E: ">"
+}
+
+numpad = {
+    "9": (0, 2),
+    "8": (0, 1),
+    "7": (0, 0),
+    "6": (1, 2),
+    "5": (1, 1),
+    "4": (1, 0),
+    "3": (2, 2),
+    "2": (2, 1),
+    "1": (2, 0),
+    "0": (3, 1),
+    "A": (3, 2)
+}
+
+arrowPad = {
+    "A": (0, 2),
+    "^": (0, 1),
+    "<": (1, 0),
+    "v": (1, 1),
+    ">": (1, 2) 
 }
 
 def dfs(current:tuple[int], end:tuple[int], locations, path:str, possible_paths: list):
@@ -30,19 +52,6 @@ def dfs(current:tuple[int], end:tuple[int], locations, path:str, possible_paths:
         dfs(next_spot, end, locations, path + direction_to_symbol[direction], possible_paths)
 
 def generateKeypadPath(input:str):
-    numpad = {
-        "9": (0, 2),
-        "8": (0, 1),
-        "7": (0, 0),
-        "6": (1, 2),
-        "5": (1, 1),
-        "4": (1, 0),
-        "3": (2, 2),
-        "2": (2, 1),
-        "1": (2, 0),
-        "0": (3, 1),
-        "A": (3, 2)
-    }
     location = numpad["A"]
     output = [""]
     for button in input:
@@ -59,13 +68,6 @@ def generateKeypadPath(input:str):
     return output
 
 def generateArrowPath(input:str):
-    arrowPad = {
-        "A": (0, 2),
-        "^": (0, 1),
-        "<": (1, 0),
-        "v": (1, 1),
-        ">": (1, 2) 
-    }
     location = arrowPad["A"]
     output = [""]
     for button in input:
@@ -80,6 +82,28 @@ def generateArrowPath(input:str):
         location = destination
     return output
 
+@cache
+def countShortestPath(input:str, depth:int):
+    # print(input, depth)
+    if depth == 0:
+        return len(input)
+    total_size = 0
+    start = arrowPad["A"]
+    for i in range(len(input)):
+        end = arrowPad[input[i]]
+        possibilities = []
+        dfs(start, end, arrowPad.values(), "", possibilities)
+        shortest = -1
+        for path in possibilities:
+            length = countShortestPath(path, depth - 1)
+            if(shortest == -1):
+                shortest = length
+            shortest = min(shortest, length)
+        total_size += shortest
+        start = end
+    return total_size
+
+
 def run(filename: str, part1: bool):
     code = InputParser(open(filename).read()).readLines().getData()
     total = 0
@@ -90,27 +114,35 @@ def run(filename: str, part1: bool):
         prefix = int(re.findall(r"-?\d+", line)[0])
         # Figure out possible keypad paths
         paths = set(generateKeypadPath(line))
-        
-        # Figure out possible arrow pad paths
-        for i in range(2 if part1 else 25):
-            # print(i)
-            arrowPadPaths = set()
-            for path in paths:
-                arrowPadPaths.update(generateArrowPath(path))
-            # Prune out longer paths
-            shortest = -1
-            for path in arrowPadPaths:
-                if(shortest == -1):
-                    shortest = len(path)
-                shortest = min(len(path), shortest)
-            paths = set(filter(lambda x: len(x) == shortest, arrowPadPaths))
-        
-        # Find shortest path
-        shortest = len(paths.pop())
-        for path in paths:
-            shortest = min(len(path), shortest)
-        total += prefix * shortest
 
+        # Old part1
+        #     # Figure out possible arrow pad paths
+        #     for i in range(2):
+        #         # print(i)
+        #         arrowPadPaths = set()
+        #         for path in paths:
+        #             arrowPadPaths.update(generateArrowPath(path))
+        #         # Prune out longer paths
+        #         shortest = -1
+        #         for path in arrowPadPaths:
+        #             if(shortest == -1):
+        #                 shortest = len(path)
+        #             shortest = min(len(path), shortest)
+        #         paths = set(filter(lambda x: len(x) == shortest, arrowPadPaths))
+            
+        #     # Find shortest path
+        #     shortest = len(paths.pop())
+        #     for path in paths:
+        #         shortest = min(len(path), shortest)
+        #     total += prefix * shortest
+        
+        shortest = -1
+        for path in paths:
+            length = countShortestPath(path, 2 if part1 else 25)
+            if(shortest == -1):
+                shortest = length
+            shortest = min(shortest, length)
+        total += prefix * shortest
     return total
 
 
