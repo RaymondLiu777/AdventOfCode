@@ -37,6 +37,7 @@ arrowPad = {
     ">": (1, 2) 
 }
 
+# Probably a bit excessive
 def dfs(current:tuple[int], end:tuple[int], locations, path:str, possible_paths: list):
     if(current == end):
         possible_paths.append(path + "A")
@@ -103,7 +104,6 @@ def countShortestPath(input:str, depth:int):
         start = end
     return total_size
 
-
 def run(filename: str, part1: bool):
     code = InputParser(open(filename).read()).readLines().getData()
     total = 0
@@ -135,13 +135,15 @@ def run(filename: str, part1: bool):
         #     for path in paths:
         #         shortest = min(len(path), shortest)
         #     total += prefix * shortest
-        
+
         shortest = -1
         for path in paths:
             length = countShortestPath(path, 2 if part1 else 25)
             if(shortest == -1):
                 shortest = length
             shortest = min(shortest, length)
+
+        # print(shortest)
         total += prefix * shortest
     return total
 
