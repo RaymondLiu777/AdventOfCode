@@ -5,11 +5,11 @@ class Graph:
 
     def addVertex(self, vertex):
         if(not self.directed):
-            self.graph[vertex] = []
+            self.graph[vertex] = set()
         else:
             self.graph[vertex] = {
-                "in": [],
-                "out": []
+                "in": set(),
+                "out": set()
             }
 
     def getVertex(self, vertex):
@@ -24,11 +24,11 @@ class Graph:
         if(not self.hasVertex(v2)):
             self.addVertex(v2)
         if(not self.directed):
-            self.graph[v1].append[v2]
-            self.graph[v2].append[v1]
+            self.graph[v1].add(v2)
+            self.graph[v2].add(v1)
         else:
-            self.graph[v1]["out"].append(v2)
-            self.graph[v2]["in"].append(v1)
+            self.graph[v1]["out"].add(v2)
+            self.graph[v2]["in"].add(v1)
 
     def hasEdge(self, v1, v2):
         if(not self.hasVertex(v1) or not self.hasVertex(v2)):
@@ -41,17 +41,3 @@ class Graph:
     def print(self):
         for key, items in self.graph.items():
             print(key, items)
-# TODO: Generalize topological sort and bfs
-
-# def bfs(vertices, node):
-#     reachable = set()
-#     queue = [node]
-#     while len(queue) > 0:
-#         vertex = queue[0]
-#         queue = queue[1:]
-#         if(vertex in reachable):
-#             continue
-#         reachable.add(vertex)
-#         for outgoing in vertices[vertex]["out"]:
-#             queue.append(outgoing)
-#     return reachable
