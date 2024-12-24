@@ -9,6 +9,7 @@ from InputParser import InputParser
 # from Graph import Graph
 # from functools import cache
 from collections import defaultdict
+from day24_secrets import swaps, carry
 
 
 def run(filename: str, part1: bool):
@@ -47,18 +48,18 @@ def run(filename: str, part1: bool):
         for wire, value in wires:
             zNum *= 2
             zNum += value
-        print(wires)
+        # print(wires)
         return zNum
     else:
         # Part2 is more complex, first use the visualizer to get the DOT languague version of the graph
         # Visualize graph in a DOT graph generator
-        # Find the carry bit from x00, y00 add set it in c (in "cry")
-        # Use this to find problems at different adders and figure out which gates needs to be swap
-        swaps = {"abc": "cba", "cba": "abc"}
+        # Find the carry bit from x00, y00 add set it in day24_secrets
+        # Use this to find problems at different adders and figure out which gates needs to be swapped
+        # As you figure out which gates need to be swapped, add them to swaps in secrets
         gate_map = dict(map(lambda x: (x[0:3], x[4] if x[4] not in swaps else swaps[x[4]]), gates))
         for key, val in list(gate_map.items()):
             gate_map[(key[2], key[1], key[0])] = val
-        c = "cry"
+        c = carry
         for i in range(1, 45):
             num = str(i) if i >= 10 else "0" + str(i)
             print(num)
