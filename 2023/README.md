@@ -3,7 +3,7 @@
 This year, I tried to finish all the puzzles as fast as possible, starting when they were released whenever possible. I used python for speed and over the course of the month, I developed some library functions and scripts to help with the process.
 
 # Final Rankings:
-
+```
       --------Part 1---------   --------Part 2---------
 Day       Time    Rank  Score       Time    Rank  Score
   1       >24h  179298      0       >24h  134187      0
@@ -31,3 +31,4 @@ Day       Time    Rank  Score       Time    Rank  Score
  23   20:35:19   12042      0   21:14:36    8785      0
  24   01:18:44    2062      0   03:42:44    1696      0
  25   00:34:58     826      0   00:35:17     723      0
+ ```
