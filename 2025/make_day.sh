@@ -32,6 +32,6 @@ rm $folder-data.txt
 # Create day with template, sample and input
 mkdir $folder
 cp template.py $folder/$folder.py
-touch $folder/$folder.hs
 mv sample.txt $folder/
 mv input.txt $folder/
+touch $folder/$folder.hs
