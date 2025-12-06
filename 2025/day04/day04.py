@@ -32,9 +32,7 @@ def run(filename: str, part1: bool):
         for location in movable:
             grid.SetGrid(location, "X")
         total += len(movable)
-        if(part1):
-            break
-        if(len(movable) == 0):
+        if(part1 or len(movable) == 0):
             break
         movable.clear()
     return total
