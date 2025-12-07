@@ -8,7 +8,8 @@ from Grid import Directions, Grid
 # from TupleOps import TupleOps
 # from Graph import Graph
 # from functools import cache
-from collections import defaultdict
+# from collections import defaultdict
+from collections import Counter
 
 
 def run(filename: str, part1: bool):
@@ -16,10 +17,10 @@ def run(filename: str, part1: bool):
     grid = Grid(data)
     s_row, s_col = grid.GetLocation("S")
     splits = 0
-    cols = defaultdict(int)
+    cols = Counter()
     cols[s_col] = 1
     for row in range(s_row + 1, grid.rows):
-        next_cols = defaultdict(int)
+        next_cols = Counter()
         for col, amount in cols.items():
             if(grid.Get((row, col)) == "^"):
                 next_cols[col-1] += amount
@@ -28,7 +29,7 @@ def run(filename: str, part1: bool):
             else:
                 next_cols[col] += amount
         cols = next_cols
-    return splits if part1 else sum(cols.values())
+    return splits if part1 else cols.total()
 
 
 if __name__ == "__main__" :
