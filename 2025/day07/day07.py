@@ -14,14 +14,11 @@ from collections import defaultdict
 def run(filename: str, part1: bool):
     data = InputParser(open(filename).read()).readGrid().getData()
     grid = Grid(data)
-    start = (-1, -1)
-    for location in grid:
-        if grid.Get(location) == "S":
-            start = location
-    cols = defaultdict(int)
-    cols[start[1]] = 1
+    s_row, s_col = grid.GetLocation("S")
     splits = 0
-    for row in range(start[0] + 1, grid.rows):
+    cols = defaultdict(int)
+    cols[s_col] = 1
+    for row in range(s_row + 1, grid.rows):
         next_cols = defaultdict(int)
         for col, amount in cols.items():
             if(grid.Get((row, col)) == "^"):

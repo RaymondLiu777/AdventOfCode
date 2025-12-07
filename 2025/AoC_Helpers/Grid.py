@@ -51,6 +51,23 @@ class Grid:
 
     def InGrid(self, location):
         return location[0] >= 0 and location[1] >= 0 and location[0] < len(self.grid) and location[1] < len(self.grid[location[0]])
+    
+    def GetLocations(self, value):
+        locations = []
+        for location in self:
+            if self.Get(location) == value:
+                locations.append(location)
+        return locations
+
+    def GetLocation(self, value):
+        locations = self.GetLocations(value)
+        if len(locations) < 1:
+            print("Unable to find value", value)
+            raise Exception("Unable to find value")
+        if len(locations) > 1:
+            print("Multiple Locations Found", value, locations)
+            raise Exception("Multiple Locations Found")
+        return locations[0]
 
     def print(self):
         for line in self.grid:
