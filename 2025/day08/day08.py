@@ -30,10 +30,12 @@ def run(filename: str, part1: bool):
     points = InputParser(open(filename).read()).readLines().split(",").cast(int).getData()
     points = list(map(tuple,points))
     # print(points)
+
     # Create graph of nodes
     graph = Graph()
     for point in points:
         graph.addVertex(tuple(point))
+
     # Calculate all distances between points
     distances = []
     for idx, point1 in enumerate(points):
@@ -41,13 +43,16 @@ def run(filename: str, part1: bool):
             diff = TupleOps.Subtract(point1, point2)
             distance  = math.sqrt(sum(map(lambda x: x**2, diff)))
             distances.append((distance, point1, point2))
+
     # find shortest distances
     distances.sort()
     if part1:
+
         # Add edges to the graph
         for distance, point1, point2 in distances[0:10 if filename == "sample.txt" else 1000]:
             graph.addEdge(point1, point2)
         # print(distances)
+
         # find sizes of groups
         group_sizes = []
         visited = set()
@@ -57,7 +62,8 @@ def run(filename: str, part1: bool):
                 group_sizes.append(len(group))
                 visited.update(group)
         group_sizes.sort(reverse=True)
-        print(group_sizes)
+        # print(group_sizes)
+
         return group_sizes[0] * group_sizes[1] * group_sizes[2]
     else:
         # Add edges to the graph, keep track of the size of an arbitary group
@@ -67,12 +73,14 @@ def run(filename: str, part1: bool):
             if(point1 in group and point2 in group):
                 graph.addEdge(point1, point2)
                 continue
+
             # If a connect is ever made to the group, update nodes in group
             if(point1 in group):
                 group.update(node_group(graph, point2))
             elif (point2 in group):
                 group.update(node_group(graph, point1))
             graph.addEdge(point1, point2)
+            
             # If the group connects all node, we found the connection
             if(len(group) == len(points)):
                 return point1[0] * point2[0]
