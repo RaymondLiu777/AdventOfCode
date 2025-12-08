@@ -3,6 +3,10 @@ class Graph:
         self.directed = directed
         self.graph = {}
 
+    def __iter__(self):
+        for n in self.graph.items():
+            yield n
+            
     def addVertex(self, vertex):
         if(not self.directed):
             self.graph[vertex] = set()

@@ -56,7 +56,7 @@ def run(filename: str, part1: bool):
         # find sizes of groups
         group_sizes = []
         visited = set()
-        for vertex in graph.graph.keys():
+        for vertex, _ in graph:
             if vertex not in visited:
                 group = node_group(graph, vertex)
                 group_sizes.append(len(group))
